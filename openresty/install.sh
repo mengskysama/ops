@@ -65,7 +65,8 @@ mkdir -p $PREFIX/nginx/conf/sites-enabled
 
 # logrotate
 cp $OPS_DIR/openresty/files/logrotate /etc/logrotate.d/nginx
-
+# nginx
+cp $OPS_DIR/openresty/files/nginx.conf $PREFIX/nginx/conf/nginx.conf
 # service
 cp $OPS_DIR/openresty/files/nginx /etc/init.d/nginx
 update-rc.d nginx defaults
