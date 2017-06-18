@@ -8,6 +8,13 @@ OPS_DIR=/opt/ops
 PREFIX=/usr/local/openresty
 BUILD_DIR=/tmp
 
+# certbot
+
+apt-get install software-properties-common
+add-apt-repository ppa:certbot/certbot
+apt-get update
+apt-get install certbot 
+
 # env
 apt-get install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl make build-essential -y
 
