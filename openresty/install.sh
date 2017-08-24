@@ -42,7 +42,6 @@ cd $VER
 --with-stream \
 --with-stream_ssl_module \
 --add-module=/tmp/stream-lua-nginx-module-master \
--j
 
 make
 make install
