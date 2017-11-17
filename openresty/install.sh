@@ -3,27 +3,27 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-VER=openresty-1.11.2.3
+VER=openresty-1.13.6.1
+STREAM_VER=0.0.3
 OPS_DIR=/opt/ops
 PREFIX=/usr/local/openresty
 BUILD_DIR=/tmp
 
 # certbot
 
-apt-get install software-properties-common
-add-apt-repository ppa:certbot/certbot
+apt-get install software-properties-common -y
+add-apt-repository ppa:certbot/certbot -y
 apt-get update
-apt-get install certbot 
+apt-get install certbot -y
 
 # env
 apt-get install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl make build-essential -y
 
 # stream module
 cd $BUILD_DIR
-wget https://github.com/openresty/stream-lua-nginx-module/archive/master.zip
-unzip master
-rm $VER.tar.gz
-rm -rf $VER
+wget -O stream-lua-nginx-module.tar.gz https://github.com/openresty/stream-lua-nginx-module/archive/v$STREAM_VER.tar.gz
+tar xzvf stream-lua-nginx-module.tar.gz
+rm stream-lua-nginx-module.tar.gz
 
 # openresty
 wget https://openresty.org/download/$VER.tar.gz
@@ -31,17 +31,14 @@ tar xzvf $VER.tar.gz
 cd $VER
 
 ./configure \
---with-pcre-jit \
---with-ipv6 \
 --with-http_realip_module \
 --with-http_iconv_module \
 --with-pcre-jit \
---with-ipv6 \
 --with-http_ssl_module \
 --with-http_stub_status_module \
 --with-stream \
 --with-stream_ssl_module \
---add-module=/tmp/stream-lua-nginx-module-master \
+--add-module=/tmp/stream-lua-nginx-module-$STREAM_VER
 
 make
 make install
@@ -55,7 +52,7 @@ tar -xzvf $LUAROCKS.tar.gz
 cd $LUAROCKS
 ./configure --prefix=/usr/local/openresty/luajit \
     --with-lua=/usr/local/openresty/luajit/ \
-    --lua-suffix=jit-2.1.0-beta2 \
+    --lua-suffix=jit-2.1.0-beta3 \
     --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1
 make build
 make install
@@ -77,3 +74,4 @@ cp $OPS_DIR/openresty/files/nginx.conf $PREFIX/nginx/conf/nginx.conf
 cp $OPS_DIR/openresty/files/nginx /etc/init.d/nginx
 update-rc.d nginx defaults
 
+# clean up
