@@ -57,7 +57,7 @@ def do_out_of_transfer():
     p = subprocess.Popen('iptables -L', stdout=subprocess.PIPE, shell=True)
     ret = p.stdout.readlines()
     p.stdout.close()
-    ret = list(filter(lambda x: 'limitrxtx' not in x, ret))
+    ret = list(filter(lambda x: 'limitrxtx' in str(x), ret))
     if ret:
         logger.info('already limit ...')
         return
@@ -94,6 +94,7 @@ def mon():
         write_log(log)
         return
 
+    log[IF_NAME]['TX'] = info[IF_NAME]['TX']
     log['monthly_traffic'] += n
     write_log(log)
     logger.info('Monthly traffic: %s Gi' % str(log['monthly_traffic'] / 1024 / 1024 / 1024))
