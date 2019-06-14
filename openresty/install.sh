@@ -30,9 +30,10 @@ wget https://openresty.org/download/$VER.tar.gz
 tar xzvf $VER.tar.gz
 cd $VER
 
-./configure \
+./configure --prefix=/usr/local/openresty \
+--with-luajit \
 --with-pcre-jit \
---with-stream_ssl_module\
+--with-stream_ssl_module \
 --with-stream_ssl_preread_module \
 --with-http_v2_module \
 --without-mail_pop3_module \
